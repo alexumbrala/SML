@@ -88,7 +88,7 @@ class RegularizedLinearRegressor_Multi:
         # Implement this method. Store the predicted outputs in y_pred.           #
         #  1 line of code expected                                                #
         ###########################################################################
-
+        y_pred = np.dot(X,self.theta)
 
         ###########################################################################
         #                           END OF YOUR CODE                              #
@@ -105,7 +105,8 @@ class RegularizedLinearRegressor_Multi:
         #  One line of code expected                                              #
         ###########################################################################
 
-        theta_n = np.zeros((X.shape[1],))
+        np.dot(np.dot(np.linalg.inv(np.dot(X.T, X)), X.T), y)
+#         (np.linalg.inv(X.T.dot(X)).dot(X.T)).dot(y)
 
         ###########################################################################
         return theta_n
@@ -132,8 +133,9 @@ class RegularizedLinearReg_SquaredLoss(RegularizedLinearRegressor_Multi):
         # Calculate J (loss) wrt to X,y, and theta.                               #
         #  2 lines of code expected                                               #
         ###########################################################################
-
-
+        error = np.dot(X,theta)-y
+        J = 0.5*((error**2).sum()+reg*(theta[1:]**2).sum())/X.shape[0]
+    
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
@@ -149,8 +151,10 @@ class RegularizedLinearReg_SquaredLoss(RegularizedLinearRegressor_Multi):
         # Calculate gradient of loss function wrt to X,y, and theta.              #
         #  3 lines of code expected                                               #
         ###########################################################################
-
-
+        error = np.dot(X,theta)-y
+        grad = np.dot(error.T, X).T / X.shape[0]
+        grad[1:]+=reg*theta[1:]/X.shape[0]
+            
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
