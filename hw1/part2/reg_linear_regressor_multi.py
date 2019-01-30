@@ -105,7 +105,7 @@ class RegularizedLinearRegressor_Multi:
         #  One line of code expected                                              #
         ###########################################################################
 
-        np.dot(np.dot(np.linalg.inv(np.dot(X.T, X)), X.T), y)
+        theta_n = np.dot(np.dot(np.linalg.inv(np.dot(X.T, X)), X.T), y)
 #         (np.linalg.inv(X.T.dot(X)).dot(X.T)).dot(y)
 
         ###########################################################################
