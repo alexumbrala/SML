@@ -65,8 +65,7 @@ def sgd_momentum(theta, dtheta, config=None):
   # TODO: Implement the momentum update formula. Store the updated value in   #
   # the next_theta variable. You should also use and update the velocity v.       #
   #############################################################################
-  v = config['momentum']*v - config['learning_rate']*dtheta
-  next_theta = next_theta + v
+  next_theta = theta + config['momentum']*v - config['learning_rate']*dtheta
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -100,8 +99,11 @@ def rmsprop(theta, dtheta, config=None):
   # theta in the next_theta variable. Don't forget to update cache value      #  
   # stored in config['cache'].                                                #
   #############################################################################
-  
-  pass
+#   config['cache'] = config['decay_rate']*config['cache'] - (1 - config['decay_rate'])*(dtheta**2)
+#   next_theta = theta - config['learning_rate']*dtheta*(1/(config['epsilon'] + np.sqrt(config['cache'])))
+
+  config['cache'] = config['decay_rate'] * config['cache'] + (1 - config['decay_rate']) * (dtheta**2)
+  next_theta = theta - config['learning_rate'] * dtheta * (1/(config['epsilon'] + np.sqrt(config['cache']))) 
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -138,8 +140,12 @@ def adam(theta, dtheta, config=None):
   # the next_x variable. Don't forget to update the m, v, and t variables     #
   # stored in config.                                                         #
   #############################################################################
-  
-  pass
+  config['m'] = config['beta1']*config['m'] + (1 - config['beta1'])*dtheta
+  config['v'] = config['beta2']*config['v'] + (1 - config['beta2'])*(dtheta**2)
+  config['t'] += 1
+  mb = config['m']/(1 - config['beta1']**config['t'])
+  vb = config['v']/(1 - config['beta2']**config['t'])
+  next_theta = theta - (config['learning_rate']*mb)/(np.sqrt(vb) + config['epsilon'])
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
